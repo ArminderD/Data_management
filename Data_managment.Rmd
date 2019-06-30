@@ -71,7 +71,7 @@ R packages are bundles of functions which extend the capabilities of R. Thousand
 
 Stata and R have minor difference in default setting and methods. In this document, we will follow the Stata analysis as closely as possible, but small and usually important difference in Stata and R will be noted. Unlike Stata, R can hold multiple datasets in memory simultaneously and so, there is no need to save intermediate files or close and re-open datasets. 
 
-You need to communicate with R in a way that the program understands; i.e. you need to be able to tell R what you want in a way that it understands. You can do this by typing in commands using an appropriate “language”. You should save a copy of your commands, often referred to as “program”, so that you can check and repeat the analysis and so that you have a permanent record of what you have done.
+You need to communicate with R in a way that the program understands; i.e. you need to be able to tell R what you want in a way that it understands. You can do this by typing in commands using an appropriate “language”.
 
 Syntax, also sometimes referred to as “code” or “programming”, refers to the grammatical rules that you need to follow so that R understands what you want it to do. Syntax does not necessarily follow rules of English grammar! You tell R to do something by using the correct command or set of commands. An R command is a combination of syntax elements, expressed following the rules of ‘R language’. 
 
@@ -80,4 +80,13 @@ Syntax, also sometimes referred to as “code” or “programming”, refers to
 
 R Studio is an integrated development environment (IDE) for R. It includes a console, syntax-highlighting editor that supports direct code execution, as well as tools for plotting, history, and debugging and workspace management.  It is available in open source and commercial editions on the desktop (Windows, Mac, and Linux) and from a web browser to a Linux server running R Studio Server or R Studio Server Pro. In this course, we will be using R Studio. The R Studio environment is similar to the Stata environment and we hope will help ease the transition from Stata to R. 
 
+Ensure you have the latest [Java](https://www.java.com/en/download/) installed. Download and install [R](https://cran.r-project.org/) and [RStudio](https://www.rstudio.com/products/rstudio/download/)
+
 ## The R Program 
+
+Open the R program by double-clicking on the icon (as you would open any other program that you are familiar with).
+
+```{r, fig.align='center', out.width = "100px", echo=FALSE}
+knitr::include_graphics("fig1_Ricon.png")
+```
+
