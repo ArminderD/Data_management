@@ -479,8 +479,72 @@ table(abm=meningitis$abm,sex=meningitis$sex)</code></pre>
 ##   0 118  85
 ##   1 113 104</code></pre>
 <pre><code>Does acute bacterial meningitis appear to be higher for males or females? Does R account for missing values? </code></pre>
-<p>Table ignores missing values. To include NA as a category in counts, include the table option exclude=NULL if the variable is a vector. If the variable is a factor you have to create a new factor using newfactor &lt;- factor(oldfactor, exclude=NULL).</p>
+<p>Table ignores missing values. To include NA as a category in counts, include the table option <code>exclude=NULL</code> if the variable is a vector. If the variable is a factor you have to create a new factor using <code>newfactor &lt;- factor(oldfactor, exclude=NULL)</code>.</p>
 <p>If we are interested in obtaining summary statistics on white blood count for females, we can use the summarize command (without and with the detail option):</p>
+<pre class="r"><code>summary(meningitis$wbc[meningitis$sex==1])</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+##    1.70    8.30   11.80   13.33   16.20   53.50     119</code></pre>
+<p>Note that we have to specify two equal signs: == not =. Double equal signs are always required for such commands. This is one of the syntax rules of R and the command won’t run if this is not specified correctly.</p>
+<p>You can also use the above command to specify a range of values to be included in the analysis:</p>
+<pre class="r"><code>table(meningitis$abm[meningitis$wbc&gt;=5 &amp; meningitis$wbc&lt;=10])</code></pre>
+<pre><code>## 
+##  0  1 
+## 94 32</code></pre>
+<pre><code>What is the mean CSF protein for participants aged between 20 and 70? 
+What proportion of white females had acute bacterial meningitis? </code></pre>
+<pre class="r"><code>summary(meningitis$pr[meningitis$age&gt;=20 &amp; meningitis$age&lt;=70])</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+##     1.0    53.0    96.0   207.4   209.8  1740.0     114</code></pre>
+<pre class="r"><code>t &lt;- table(meningitis$sex, meningitis$abm, meningitis$race==2)
+prop.table(t,1)*100</code></pre>
+<pre><code>## , ,  = FALSE
+## 
+##    
+##            0        1
+##   1 30.13100 27.07424
+##   2 26.59574 33.51064
+## 
+## , ,  = TRUE
+## 
+##    
+##            0        1
+##   1 20.52402 22.27074
+##   2 18.61702 21.27660</code></pre>
+</div>
+<div id="the-keep-and-drop-commands" class="section level3">
+<h3>The keep and drop commands</h3>
+<p>In R, its is easier to keep the variables than drop them. There is no keep command, but we can specify the variables you want to retain in the dataset. It is always better to create a new dataset with the fewer variables than modify the existing dataset.</p>
+<p>There are 3 major ways to do this in R</p>
+<div id="select-variables-v1-v2-v3" class="section level5">
+<h5>Select variables v1, v2, v3</h5>
+<p><code>myvars &lt;- c(&quot;v1&quot;, &quot;v2&quot;, &quot;v3&quot;)</code></p>
+<p><code>newdata &lt;- mydata[myvars]</code></p>
+</div>
+<div id="another-method" class="section level5">
+<h5>Another method</h5>
+<p><code>myvars &lt;- paste(&quot;v&quot;, 1:3, sep=&quot;&quot;)</code></p>
+<p><code>newdata &lt;- mydata[myvars]gc</code></p>
+</div>
+<div id="select-1st-and-5th-thru-10th-variables" class="section level5">
+<h5>Select 1st and 5th thru 10th variables</h5>
+<p><code>newdata &lt;- mydata[c(1,5:10)]</code></p>
+<p>Example: you can subset the meningitis dataset as:</p>
+<pre class="r"><code>Meningitis1 &lt;- meningitis[c(1:11,13:14)]</code></pre>
+<p>To drop or exclude variables, you can use the following syntax:</p>
+</div>
+<div id="exclude-variables-v1-v2-v3" class="section level5">
+<h5>Exclude variables v1, v2, v3</h5>
+<p><code>myvars &lt;- names(mydata) %in% c(&quot;v1&quot;, &quot;v2&quot;, &quot;v3&quot;)</code></p>
+<p><code>newdata &lt;- mydata[!myvars]</code></p>
+<p>If we have a very large dataset and want to retain only a small number of variables then the keep statement would be more efficient.</p>
+</div>
+<div id="to-remove-observations-with-particular-characteristics" class="section level5">
+<h5>To remove observations with particular characteristics</h5>
+<p>For example if want a dataset which only includes meningitis patients aged less than 20 we could use either of the following statements:</p>
+<pre class="r"><code>newdata &lt;- meningitis[ which(meningitis$age &lt;20 ),]</code></pre>
+<p>Generating Graphs Graphs are a very useful way of summarising and describing data, and enable you to look at the shape of the distribution. R has very good graphics packages including ggplot and ggplot2.</p>
+<p>Histograms We will first generate a histogram for white blood count (WBC).</p>
+</div>
 </div>
 </div>
 <div class="footnotes">

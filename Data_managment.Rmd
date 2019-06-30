@@ -361,3 +361,84 @@ Table ignores missing values. To include NA as a category in counts, include the
 If we are interested in obtaining summary statistics on white blood count for females, we can use the summarize command (without and with the detail option):
 
 
+```{r, eval=TRUE}
+summary(meningitis$wbc[meningitis$sex==1])
+
+```
+
+Note that  we have to specify two equal signs: == not =. Double equal signs are always required for such commands. This is one of the syntax rules of R and the command won’t run if this is not specified correctly.
+
+You can also use the above command to specify a range of values to be included in the analysis: 
+
+```{r, eval=TRUE}
+table(meningitis$abm[meningitis$wbc>=5 & meningitis$wbc<=10])
+
+```
+
+    What is the mean CSF protein for participants aged between 20 and 70? 
+    What proportion of white females had acute bacterial meningitis? 
+
+```{r, eval=TRUE}
+summary(meningitis$pr[meningitis$age>=20 & meningitis$age<=70])
+
+t <- table(meningitis$sex, meningitis$abm, meningitis$race==2)
+prop.table(t,1)*100
+
+```
+
+
+### The keep and drop commands
+
+In R, its is easier to keep the variables than drop them. There is no keep command, but we can specify the variables you want to retain in the dataset. It is always better to create a new dataset with the fewer variables than modify the existing dataset. 
+
+There are 3 major ways to do this in R
+
+##### Select variables v1, v2, v3
+`myvars <- c("v1", "v2", "v3")` 
+
+`newdata <- mydata[myvars]`
+
+##### Another method
+`myvars <- paste("v", 1:3, sep="")`
+
+`newdata <- mydata[myvars]gc`
+
+##### Select 1st and 5th thru 10th variables
+`newdata <- mydata[c(1,5:10)]`
+
+Example: you can subset the meningitis dataset as:
+
+```{r, eval=FALSE}
+Meningitis1 <- meningitis[c(1:11,13:14)]
+
+```
+
+To drop or exclude variables, you can use the following syntax: 
+
+##### Exclude variables v1, v2, v3
+`myvars <- names(mydata) %in% c("v1", "v2", "v3")`
+
+`newdata <- mydata[!myvars]`
+
+If we have a very large dataset and want to retain only a small number of variables then the keep statement would be more efficient.  
+
+##### To remove observations with particular characteristics
+
+For example if want a dataset which only includes meningitis patients aged less than 20 we could use either of the following statements:
+
+
+```{r, eval=FALSE}
+newdata <- meningitis[ which(meningitis$age <20 ),]
+
+```
+
+
+#### Generating Graphs
+
+Graphs are a very useful way of summarising and describing data, and enable you to look at the shape of the distribution. R has very good graphics packages including `ggplot2`. 
+
+
+##### Histograms
+We will first generate a histogram for white blood count (WBC). 
+
+
