@@ -42,7 +42,7 @@ This module provides an introduction to the R statistical package. On completion
 #### Datasets 
 
 ##### *Meningitis data* 
-+ Meningitis csv dataset: dataset in csv (comma delimited) format 
++ meningitis.csv dataset: dataset in csv (comma delimited) format 
 
 ##### *Pertussis data*
 + pertussis.csv 
@@ -61,7 +61,7 @@ This module provides an introduction to the R statistical package. On completion
 
 
 
-## Introduction to R and Describing Data
+### Introduction to R and Describing Data
 
 R is a very powerful, and relatively easy to use Statistical package which allows you to undertake data management and manipulation, perform a range of basic and complex statistical tests and analyses, and generate a wide variety of different graphs. For this course, you will be required to use R to undertake basic analysis and graphics.
 
@@ -76,17 +76,109 @@ You need to communicate with R in a way that the program understands; i.e. you n
 Syntax, also sometimes referred to as “code” or “programming”, refers to the grammatical rules that you need to follow so that R understands what you want it to do. Syntax does not necessarily follow rules of English grammar! You tell R to do something by using the correct command or set of commands. An R command is a combination of syntax elements, expressed following the rules of ‘R language’. 
 
 
-## R Studio
+### R Studio
 
 R Studio is an integrated development environment (IDE) for R. It includes a console, syntax-highlighting editor that supports direct code execution, as well as tools for plotting, history, and debugging and workspace management.  It is available in open source and commercial editions on the desktop (Windows, Mac, and Linux) and from a web browser to a Linux server running R Studio Server or R Studio Server Pro. In this course, we will be using R Studio. The R Studio environment is similar to the Stata environment and we hope will help ease the transition from Stata to R. 
 
 Ensure you have the latest [Java](https://www.java.com/en/download/) installed. Download and install [R](https://cran.r-project.org/) and [RStudio](https://www.rstudio.com/products/rstudio/download/)
 
-## The R Program 
+### The R Program 
 
-Open the R program by double-clicking on the icon (as you would open any other program that you are familiar with).
+Open the R program using RStudio by double-clicking on the icon (as you would open any other program that you are familiar with).
 
 ```{r, fig.align='center', out.width = "100px", echo=FALSE}
 knitr::include_graphics("fig1_Ricon.png")
 ```
+
+### RStudio Interface
+
+The diagram below shows the open RStudio program; you will see that there are various different components or windows. The R windows are: 
+
++ R Script– where you type in R commands one by one (visible once you open or create a new R scropt file) 
+
++ Console window – this shows a log of everything you do in R session, including commands and results of these commands 
+
++ History – keeps a record of every command you enter in R session 
+
++	Environment–stored all the datasets, arrays, lists and variables created in R
+
++	Figures – Displays all plots and figures created in R. You can use the arrows to move between images. The export option can be used to save the plots as pdf or image, or to copy plots to clipboard. 
+
++ Packages – you can select the packages to be installed from the list of packages 
+
+```{r, fig.align='center', out.width = "750px", echo=FALSE}
+knitr::include_graphics("fig2_Rstudio_screenshot.png")
+```
+
+### RStudio Menu 
+
+On the top left hand side of the screen you will see the set of R icons.
+
+
+```{r, fig.align='center', out.width = "750px", echo=FALSE}
+knitr::include_graphics("fig3_Rstudio_screenshot_2nd.png")
+```
+
+
+    On your computer, identify: 
+    1. the R console
+    2. the R script
+    3. the R environment
+    
+
+### Datasets
+
+The first dataset we will be using has been modified from a dataset for 581 patients with acute meningitis (Table 1). Data from a subset of 422 patients were used to examine factors associated with differentiating between acute viral or acute bacterial meningitis^[Spanos A, Harrell FE, Durack DT. Differential diagnosis of acute meningitis: An analysis of the predictive value of initial observations. JAMA, 1989; 262: 2700-2707]. The original dataset can be found at: http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/Cabm.html
+
+The dataset is available as **meningitis.csv** dataset: A comma delimited Excel file which can be imported into R or other statistical programs; this type of file has a .csv extension. 
+
+
+**Table1:**  Format of meningitis dataset
+
+```{r, fig.align='center', out.width = "750px", echo=FALSE}
+knitr::include_graphics("table1_formatting.png")
+```
+
+
+## Opening data 
+
+### Creating a new project
+
+Create a new R project under “File > New Project…” and select “New Directory > New Project” (noting file path so that you know where to save .csv files etc. on your computer). 
+
+The project file name you just created will end in .Rproj. Locate the folder containing this file. This will be your working directory.  This method is recommended each time you are working on a new project. 
+
+Save all .csv files to the folder containing your .Rproj file (you may need to convert some data files to .csv files). 
+
+### Reading your datasets. 
+ 
+To import data from a .csv file:
+This can be done by saving your excel or R file as a .csv file and importing in directly into R 
+
+
+```{r }
+meningitis <- read.csv("meningitis.csv")
+```
+
+
+*Menu driven method:*
+
+You can import data in another format, using the File Menu. These include, csv, excel, SPSS, SAS and Stata files. Click on the File > Import Dataset, and specify the type of file you want to open – for .csv file, specify “From Text (readr)”.
+
+Use the “browse” icon to specify the directory and dataset to be opened.
+
+
+You can preview the first 50 observation in the dataset and the corresponding code to open the dataset. 
+
+```{r, fig.align='center', out.width = "750px", echo=FALSE}
+knitr::include_graphics("fig5_screenshot_4th.png")
+```
+*Note: the code displayed varies from the one mentioned above. This is an example of the flexibility R provides the user with. There are multiple ways to do the same thing in R.*
+
+The file has the variable names in the first row – you therefore you need to click on this box. 
+
+When you specify the required dataset, R will show you part of the dataset, as shown above. You can see that the first row of the file includes the names of the variables (this will generally be the case for most datasets that you will be working with), and you need to check the box First row as variable names.
+
+
+
 
