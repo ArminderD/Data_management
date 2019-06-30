@@ -156,7 +156,7 @@ To import data from a .csv file:
 This can be done by saving your excel or R file as a .csv file and importing in directly into R 
 
 
-```{r }
+```{r}
 meningitis <- read.csv("meningitis.csv")
 ```
 
@@ -179,6 +179,71 @@ The file has the variable names in the first row – you therefore you need to c
 
 When you specify the required dataset, R will show you part of the dataset, as shown above. You can see that the first row of the file includes the names of the variables (this will generally be the case for most datasets that you will be working with), and you need to check the box First row as variable names.
 
+    Open the dataset using the read.csv command or File Import Menu. You can play around with opening the different 
+    types of datasets. 
+    
+    What do you see in each of the windows when you open the dataset?
+
+### Browsing your data
+
+R Studio has a nice feature where everything is in one browser window, so you can browse your dataset and your code without having to switch between windows. 
+
+```{r,eval=FALSE }
+#to view your dataset 
+View(meningitis)
+``` 
+
+Alternatively, you can also view your dataset by clicking on “meningitis” in on the top right panel in R studio browser (in the "Environment" panel), as shown below:
 
 
+```{r, fig.align='center', out.width = "750px", echo=FALSE}
+knitr::include_graphics("fig6_screenshot_5th.png")
+```
+
+      How many variables are there? How many observations? 
+      What do you think that the NA values mean? (More on this later!)
+
+### R help function 
+
+The `help()` function and `?` help operator in R provide access to the documentation pages for R functions, data sets, and other objects, both for packages in the standard R distribution and for contributed packages. 
+Example: To access documentation for the standard *lm* (linear model) function, for example, enter the command `help(lm)` or `help("lm")`, or `?lm` in R console. Another way is shown below:
+
+```{r, fig.align='center', out.width = "750px", echo=FALSE}
+knitr::include_graphics("fig7_screenshot_6th.png")
+```
+
+
+### R Commands vs Menu
+
+
+So far we have used the menus to do what we want in R as well as typing the command directly into the console and then pressing the enter key (note that no commands will be read by R until you have hit enter). You may have noticed that when you use the menus, the commands actually appear in the console. This is very helpful as you can clearly see what commands you have undertaken, and can also enable you to copy and save commands into a file which you can later review or run again. Unlike Stata, R is more command driven than menu driven and the menu-driven methods allow for limited functions in R. 
+
+Almost everything in R is done through functions. A function is a piece of code written to carry out a specified task; it may accept arguments or parameters (or not) and it may return one or more values (or not!). The core of R is an interpreted computer language which allows branching and looping as well as modular programming using functions. R allows integration with the procedures written in the C, C++, .Net, Python or FORTRAN languages for efficiency.
+
+
+**Table 2:** Some commonly used R commands
+
+```{r, fig.align='center', out.width = "750px", echo=FALSE}
+knitr::include_graphics("table2_r_commands.png")
+```
+
+### The summary command
+
+    1. Type the word summary(dataset) in the console and press enter. 
+    What has happened? How many variables are there? How many observations?
+
+    2. Type summary(sex) into the command bar. 
+    How is this result different to the one above?
+    
+
+### Variable Types 
+
+Variables in R can contain numbers or strings (characters which can be letters or numbers, or sometimes other special characters). String variables can be up to 244 characters long. Numeric variables are stored either as integers (bytes, integers or longs) or floating point (float or double). The variable type is listed under the second column in the `str()` command output. You can check the length of the character variables using the `nchar()` command. 
+ 
+It is important to be familiar with different types of variables and the way they are stored in R. Some analyses require that data be stored as numeric rather than string variables. This means for example that sex is better stored as numbers (e.g. 0 or 1) rather than string variables (ie “female” or “male”). 
+
+While storing variable values as numbers is important for analysis, we need to be know what each of these values represent; for example if we code sex as 0 or 1, which value represents males and which females? We need to have a data dictionary, which “translates” the numeric values in to character labels. You can label the numeric values of a variable in R so that the words rather than the numeric values are displayed; the numeric values will be retained for analysis purposes. We will discuss this later.
+
+    Type dataset_name in the console and press enter. What does this show? 
+    Type dataset_name$var1 then press enter. What does this show?
 
