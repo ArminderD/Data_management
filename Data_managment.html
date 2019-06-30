@@ -367,6 +367,121 @@ How is this result different to the one above?</code></pre>
 <pre><code>Type dataset_name in the console and press enter. What does this show? 
 Type dataset_name$var1 then press enter. What does this show?</code></pre>
 </div>
+<div id="summarising-and-describing-data" class="section level3">
+<h3>Summarising and Describing Data</h3>
+<p>Tabulating data:</p>
+<pre class="r"><code>#attach the dataset before analysis
+attach(meningitis_csv_dataset)
+table (sex)
+
+# or you can avoid the 'attach(dataset)' by using the '$' operator to specify which dataset the variable comes from:
+table(meningitis$sex)</code></pre>
+<pre><code>What does the results window show? How many males and females are in the data set? </code></pre>
+</div>
+<div id="two-way-table" class="section level3">
+<h3>Two-Way Table</h3>
+<pre class="r"><code>tab &lt;- table(meningitis$sex, meningitis$abm)
+tab
+
+margin.table(tab, 1) # A frequencies (summed over B)
+margin.table(tab, 2) # B frequencies (summed over A)
+
+prop.table(tab) # Cell percentages
+
+prop.table(tab,1) # Row percentages</code></pre>
+<pre><code>We have previously generated the table of acute bacterial meningitis by sex, with row percentages (ie the percentage of males and females who had acute bacterial meningitis). Now use R commands to generate column percentage; 
+i.e. the % of those with and without acute bacterial meningitis who were female.</code></pre>
+</div>
+<div id="the-summary-command-1" class="section level3">
+<h3>The Summary Command</h3>
+<p>One method of obtaining descriptive statistics is to use the summary command and follow it with the <code>sapply( )</code> function with a specified summary statistic (e.g. SD).</p>
+<pre class="r"><code>sapply(meningitis$wbc, sd, na.rm=TRUE)</code></pre>
+<p>Other possible functions used in sapply include mean, var, min, max, median, range, and quantile.</p>
+<p>Alternatively, you can also use <code>describe()</code> command available in <code>library(psych)</code> - after first downloading the package under Packages tab &gt; install, in the bottom right hand RStudio window.</p>
+<pre><code>What is the minimum, maximum, mean, standard deviation and median value for blood glucose? </code></pre>
+<pre class="r"><code>library(psych)
+describe(meningitis$bloodgl)</code></pre>
+</div>
+<div id="the-order-command" class="section level3">
+<h3>The order command</h3>
+<p>The <code>order</code> command allows you to arrange the observations in the dataset in increasing or decreasing order of a particular variable, or set of variables. For example you may want to sort the observations in order of patient id number</p>
+<p>The default method of sorting is in ascending order. To sort in decreasing order a minus sign (ie “-“) must be placed in front of the variable to be sorted. To preserve the original dataset, we create two new datasets (m1) and (m2) where:</p>
+<p>m1 is the dataset where we have sorted the original dataset in ascending order of variable “casenum”.</p>
+<p>m2 is the dataset where we have sorted the original dataset in descending order of variable “casenum”.</p>
+<p>You can confirm this by viewing both datasets, as shown below.</p>
+<pre class="r"><code>m1 &lt;- meningitis[order(meningitis$casenum),]
+head(m1, n=10) # selects first 10 rows for you to view - observe the order of the variable &quot;casenum&quot;</code></pre>
+<pre><code>##    casenum year month         age race sex wbc bloodgl gl  pr whites polys
+## 1        1   78     1  4.00000000    1   2 6.5     165  3 304   4000   100
+## 2        2   78    12  1.00000000    1   1 3.7     150 92  NA   5490    97
+## 3        3   78     3  0.79999995    1   1  NA     183 36  NA   4500   100
+## 4        4   78     8 54.00000000    1   1 7.5      NA 52  43      0    NA
+## 5        5   NA    NA          NA   NA  NA  NA      NA NA  NA     NA    NA
+## 6        6   NA    NA          NA   NA  NA  NA      NA NA  NA     NA    NA
+## 7        7   78    12  0.50000000    1   1  NA      NA NA  NA  16500   100
+## 8        8   78     2  0.09999996    1   1  NA      95 54  NA    505   100
+## 9        9   NA    NA          NA   NA  NA  NA      NA NA  NA     NA    NA
+## 10      10   78    12 11.00000000    2   2  NA      NA 35 175    700     1
+##    gram abm
+## 1     4   1
+## 2     5   1
+## 3     0  NA
+## 4     0   1
+## 5    .z   0
+## 6    .z   0
+## 7    .z   1
+## 8     0   1
+## 9    .z   0
+## 10    0  NA</code></pre>
+<pre class="r"><code>m2 &lt;- meningitis[order(-meningitis$casenum),]
+head(m2, n=10)</code></pre>
+<pre><code>##     casenum year month  age race sex       wbc bloodgl gl  pr whites polys
+## 581     581   70     7 13.0    2   1 12.500000     122 35 176   8145    82
+## 580     580   70     7  1.0    1   2 11.599999      NA 73  NA    240    50
+## 579     579   70     8  8.0    1   1 15.099999     140 95  NA     69    88
+## 578     578   70     7 23.0    1   1 10.599999      NA 84  32    242     4
+## 577     577   70     7  2.0    1   2  4.900000      NA 85  18    100    90
+## 576     576   70     7 14.0    1   2 12.099999     110 60  37    121    80
+## 575     575   70     7  0.6    1   1 10.500000      NA NA  36     36     6
+## 574     574   70    11 24.0    2   1  7.299999     116 67  NA     34    62
+## 573     573   70     6 22.0    2   1 12.599999     143 54  NA   7900    93
+## 572     572   72     7 25.0    2   1  8.000000     150 86  NA    193     1
+##     gram abm
+## 581    2   1
+## 580    0  NA
+## 579   .z   0
+## 578   .z   0
+## 577    0   1
+## 576   .z   0
+## 575   .z   0
+## 574   .z   0
+## 573    0  NA
+## 572   .z   0</code></pre>
+<pre><code>What has now happened to the observations?</code></pre>
+<p>Multiple variables can be used to sort the observations. For example, a dataset includes individuals with more than one record, such as baseline data and data for two follow-up visits, we could sort by patient and id and then visit number (or date). We can sort one (or more) variable in increasing order and another (or more) in decreasing order. When we list more than one variable for sorting, observations are sorted by the first variable and then for each value of the first variable, observations are ordered by the second variable, and so on. You can sort by any type of variable – continuous, categorical, and binary or string.</p>
+<pre><code>Sort the observations by increasing year of admission and then by increasing age, and look at the data. Now sort by increasing year of admission and decreasing age and see what has happened. Sort by CSF glucose within sex. How has R dealt with missing values?</code></pre>
+<p>Some procedures require that the data be sorted by particular variable/s. The menus will often undertake a data sort for many procedures requiring sorted data, however using R code / commands may still require you to sort the data before performing a particular procedure or operation; If that is the case R will give you an error message specifying that the data have not been sorted.</p>
+</div>
+<div id="to-repeat-commands-by-groups." class="section level3">
+<h3>To Repeat Commands by Groups.</h3>
+<p>R doesn’t use the if and by command as STATA to repeat commands across groups. It is done differently as shown below.</p>
+<p>To produce the separate tables of acute bacterial meningitis for males and females, we can tabulate abm with sex as we did above:</p>
+<pre class="r"><code>table(meningitis$abm, meningitis$sex)</code></pre>
+<pre><code>##    
+##       1   2
+##   0 118  85
+##   1 113 104</code></pre>
+<pre class="r"><code># to make it easier to interpret, we can add table labels: 
+
+table(abm=meningitis$abm,sex=meningitis$sex)</code></pre>
+<pre><code>##    sex
+## abm   1   2
+##   0 118  85
+##   1 113 104</code></pre>
+<pre><code>Does acute bacterial meningitis appear to be higher for males or females? Does R account for missing values? </code></pre>
+<p>Table ignores missing values. To include NA as a category in counts, include the table option exclude=NULL if the variable is a vector. If the variable is a factor you have to create a new factor using newfactor &lt;- factor(oldfactor, exclude=NULL).</p>
+<p>If we are interested in obtaining summary statistics on white blood count for females, we can use the summarize command (without and with the detail option):</p>
+</div>
 </div>
 <div class="footnotes">
 <hr />

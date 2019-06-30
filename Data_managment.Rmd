@@ -60,6 +60,12 @@ This module provides an introduction to the R statistical package. On completion
 + depress6b.csv 
 
 
+``` {r, include=FALSE}
+if (!require(psych)) {
+    install.packages("psych")
+    require(psych)
+}
+``` 
 
 ### Introduction to R and Describing Data
 
@@ -246,4 +252,112 @@ While storing variable values as numbers is important for analysis, we need to b
 
     Type dataset_name in the console and press enter. What does this show? 
     Type dataset_name$var1 then press enter. What does this show?
+
+
+### Summarising and Describing Data
+
+Tabulating data: 
+
+```{r, eval=FALSE}
+#attach the dataset before analysis
+attach(meningitis_csv_dataset)
+table (sex)
+
+# or you can avoid the 'attach(dataset)' by using the '$' operator to specify which dataset the variable comes from:
+table(meningitis$sex)
+````
+
+    What does the results window show? How many males and females are in the data set? 
+
+### Two-Way Table
+
+```{r, eval=FALSE}
+
+tab <- table(meningitis$sex, meningitis$abm)
+tab
+
+margin.table(tab, 1) # A frequencies (summed over B)
+margin.table(tab, 2) # B frequencies (summed over A)
+
+prop.table(tab) # Cell percentages
+
+prop.table(tab,1) # Row percentages
+
+```
+
+    We have previously generated the table of acute bacterial meningitis by sex, with row percentages (ie the percentage of males and females who had acute bacterial meningitis). Now use R commands to generate column percentage; 
+    i.e. the % of those with and without acute bacterial meningitis who were female.
+
+### The Summary Command
+
+One method of obtaining descriptive statistics is to use the summary command and follow it with the `sapply( )` function with a specified summary statistic (e.g. SD).
+
+```{r, eval=FALSE}
+sapply(meningitis$wbc, sd, na.rm=TRUE)
+```
+
+Other possible functions used in sapply include mean, var, min, max, median, range, and quantile.
+
+Alternatively, you can also use `describe()` command available in `library(psych)` - after first downloading the package under Packages tab > install, in the bottom right hand RStudio window.
+
+    What is the minimum, maximum, mean, standard deviation and median value for blood glucose? 
+
+```{r, eval=FALSE}
+library(psych)
+describe(meningitis$bloodgl)
+```
+
+### The order command 
+
+The `order` command allows you to arrange the observations in the dataset in increasing or decreasing order of a particular variable, or set of variables. For example you may want to sort the observations in order of patient id number 
+
+The default method of sorting is in ascending order. To sort in decreasing order a minus sign (ie “-“) must be placed in front of the variable to be sorted.  To preserve the original dataset, we create two new datasets (m1) and (m2) where:
+
+m1 is the dataset where we have sorted the original dataset in ascending order of variable “casenum”.
+
+m2 is the dataset where we have sorted the original dataset in descending order of variable “casenum”.
+
+You can confirm this by viewing both datasets, as shown below. 
+
+``` {r, eval=TRUE, echo=TRUE}
+m1 <- meningitis[order(meningitis$casenum),]
+head(m1, n=10) # selects first 10 rows for you to view - observe the order of the variable "casenum"
+
+m2 <- meningitis[order(-meningitis$casenum),]
+head(m2, n=10)
+```
+
+    What has now happened to the observations?
+
+
+Multiple variables can be used to sort the observations. For example, a dataset includes individuals with more than one record, such as baseline data and data for two follow-up visits, we could sort by patient and id and then visit number (or date). We can sort one (or more) variable in increasing order and another (or more) in decreasing order. When we list more than one variable for sorting, observations are sorted by the first variable and then for each value of the first variable, observations are ordered by the second variable, and so on. You can sort by any type of variable – continuous, categorical, and binary or string.
+
+    Sort the observations by increasing year of admission and then by increasing age, and look at the data. Now sort by increasing year of admission and decreasing age and see what has happened. Sort by CSF glucose within sex. How has R dealt with missing values?
+
+
+Some procedures require that the data be sorted by particular variable/s. The menus will often undertake a data sort for many procedures requiring sorted data, however using R code / commands may still require you to sort the data before performing a particular procedure or operation; If that is the case R will give you an error message specifying that the data have not been sorted.
+
+
+### To Repeat Commands by Groups. 
+
+R doesn’t use the if and by command as STATA to repeat commands across groups. It is done differently as shown below. 
+
+To produce the separate tables of acute bacterial meningitis for males and females, we can tabulate abm with sex as we did above:
+
+```{r, eval=TRUE}
+table(meningitis$abm, meningitis$sex)
+
+# to make it easier to interpret, we can add table labels: 
+
+table(abm=meningitis$abm,sex=meningitis$sex)
+
+```
+
+    Does acute bacterial meningitis appear to be higher for males or females? Does R account for missing values? 
+
+
+Table ignores missing values. To include NA as a category in counts, include the table option `exclude=NULL` if the variable is a vector. If the variable is a factor you have to create a new factor using `newfactor <- factor(oldfactor, exclude=NULL)`.
+
+If we are interested in obtaining summary statistics on white blood count for females, we can use the summarize command (without and with the detail option):
+
 
