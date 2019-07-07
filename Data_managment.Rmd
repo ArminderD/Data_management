@@ -65,6 +65,10 @@ if (!require(psych)) {
     install.packages("psych")
     require(psych)
 }
+if (!require(ggplot2)) {
+    install.packages("ggplot2")
+    require(ggplot2)
+}
 ``` 
 
 ### Introduction to R and Describing Data
