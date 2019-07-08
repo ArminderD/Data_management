@@ -446,3 +446,190 @@ Graphs are a very useful way of summarising and describing data, and enable you 
 We will first generate a histogram for white blood count (WBC). 
 
 
+```{r}
+# The below code generates a histogram
+hist(meningitis$wbc, freq = FALSE, breaks = 17, xlim = c(0,80)) # freq FALSE will plot density on y-axis instead of frequency and xlim sets the range on the x axis to be from 0 to 80, with 17 breaks (bins)
+
+# The below code generates the same histogram but without the breaks specification and x-axis limitation
+hist(meningitis$wbc)
+
+```
+
+
+    What do you think about the distribution for white blood count?
+    
+    Generate a histogram for blood glucose. What do you think about the shape of the distribution? Regenerate the 
+    histogram but add the breaks option and specify 20. What does this do?
+
+    Also note what is the default number of bins specified when we use the `hist()` command alone
+
+
+If we want to see how close to a normal distribution our histogram is we can overlay a normal curve.
+
+To do this, we first calculate mean and standard deviation for bloodgl. 
+
+```{r}
+x <- na.omit(meningitis$bloodgl)
+h <- hist(x)
+xfit<-seq(min(x),max(x),length=40) 
+yfit<-dnorm(xfit,mean=mean(x),sd=sd(x)) 
+yfit <- yfit*diff(h$mids[1:2])*length(x) 
+lines(xfit, yfit, col="blue", lwd=2)
+```
+
+    Generate a graph of CSF glucose with 25 bins and a normal curve overlay. What does this graph show? Does it look reasonable? What might you interpret from this graph?
+
+
+```{r}
+x <- na.omit(meningitis$gl)
+h <- hist(x, breaks = 25, xlim = c(0,250))
+
+xfit<-seq(min(x),max(x),length=40) 
+yfit<-dnorm(xfit,mean=mean(x),sd=sd(x)) 
+yfit <- yfit*diff(h$mids[1:2])*length(x) 
+lines(xfit, yfit, col="red", lwd=2)
+```
+
+    Using the command line rather than the graphics menu, generate a graph of CSF glucose with a normal curve overlay for: a) males only; b) for participants aged between 15 and 75.
+
+```{r}
+
+#a) 
+x <- subset(meningitis, sex==2) # subsetting dataset by males only
+x <- na.omit(meningitis$gl) 
+h <- hist(x, breaks = 25, xlim = c(0,250) , main = "Histogram of glucose CSF \n for males", xlab = " glucose CSF") # main heading and x-axis titles have been added here
+xfit<-seq(min(x),max(x),length=40) 
+yfit<-dnorm(xfit,mean=mean(x),sd=sd(x)) 
+yfit <- yfit*diff(h$mids[1:2])*length(x) 
+lines(xfit, yfit, col="blue", lwd=2)
+
+#b) 
+
+x1 <- na.omit(meningitis$gl[meningitis$age >=15 & meningitis$age<=75])
+h <- hist(x1, breaks = 11, xlim = c(0,200), main = "Histogram of glucose CSF", xlab = " glucose CSF")
+
+xfit<-seq(min(x1),max(x1),length=40) 
+yfit<-dnorm(xfit,mean=mean(x1),sd=sd(x1)) 
+yfit <- yfit*diff(h$mids[1:2])*length(x1) 
+lines(xfit, yfit, col="blue", lwd=2)
+
+```
+
+
+### Scatter plots 
+
+Histograms display variables one at a time. A scatterplot will show the relationship between two continuous variables. We will obtain a scatterplot of heart rate versus mean blood pressure. 
+
+```{r}
+#pch command will give sold circles to mark points in a graph
+plot(meningitis$gl, meningitis$bloodgl, pch = 19, col = "darkblue")
+```
+
+
+There are a very large range of options in R for specifying the look of the graph, including titles, labelling and defining axes, the colour and shape of the markers (i.e. the points on the graph), legend specification and location, subsetting, putting multiple plots on the same graph, etc. An example of R code to produce a graph of CSF versus blood glucose, separately for males and females is shown below with the corresponding graph.
+
+```{r}
+plot(meningitis$bloodgl, meningitis$gl, pch = c(21, 19), col= c("blue", "red")[unclass(meningitis$sex)], main = "Graph of CSF glucose vs blood glucose by sex")
+
+#Add legend
+legend(1,195, legend = c("Male", "Female"), col = c("Red","Blue"), pch = c(21, 19), cex = 0.8)
+
+```
+
+    Play around with generation of scatter plots of white blood count versus total leukocytes separately for patients with and without acute bacterial meningitis. Try and change the colour and type of markers, axes, title and legends.
+
+
+### Saving results and commands 
+
+It is very important to retain a copy of your results so that you, or anyone can check this, and to be able to re-run your analysis at any time. In addition you will often want to, add to, repeat or revise your analyses. You do not want to have to type in your commands or re-do all of the menu analysis again, thus you also should save a copy of all of your commands.
+
+
+#### Saving graphs 
+
+Graphs are not saved in the results window, or the log file, and need to be individually saved. 
+
+To do this click on Export and save as either Image or pdf. You can also copy the plot onto your clipboard.
+
+```{r, fig.align='center', out.width = "200px", echo=FALSE}
+knitr::include_graphics("r_scripts.png")
+```
+
+This then opens up a black page, something like a Word document, which you can put all of your commands. This is a good strategy, especially when you first start using R. Alternatively, you can also open a new R script using Ctrl+ Shift+ N. 
+
+You can add comments on a line after a hashtag (#) as shown in the R script example below. 
+
+In computer programming, a comment is a programmer-readable explanation in the source code of a computer program. They are added with the purpose of making the source code easier to understand, and are generally ignored by compilers and interpreters.
+
+The `setwd` command at the start of the file tells R to change your working directory to the one specified. This means that you don’t have to specify the directory every time you open or save a file.
+
+```{r, fig.align='center', out.width = "800px", echo=FALSE}
+knitr::include_graphics("swd_command.png")
+```
+
+
+    Have a play around with R, using both the icons and command line. Tabulate each of the variables individually; 
+    e.g. year. Do all of the values seem reasonable? Are there any unusual or extreme values? Generate some two way 
+    tables; e.g. race abm, and look at the relationship between these variables. See what different types of graphs 
+    you can generate using the commands. 
+
+
+### Descriptive Statistics
+
+This section describes how to generate confidence intervals and undertake hypothesis tests using R. 
+
+You can obtain confidence intervals and undertake hypotheses testing using the R package in two ways: 
+
+As for many types of analyses there is more than one command which provide the same/similar results. This section only focuses on how to undertake hypothesis tests in R, and does not consider the appropriateness of the test, nor assumptions checks.
+
+#### Confidence Intervals for a Single Mean or Proportion 
+
+
+    We want to obtain the 95% confidence interval for mean birthweight for a sample with the following features: 
+    o	20 observations 
+    o	Sample mean of 3159 grams 
+    o	Sample standard deviation of 220 grams 
+
+Unlike Stata, we need to construct the 95% CI for mean. The 95% confidence interval for the population mean can be expressed as:
+
+$$\overline{X}\pm1.96\sigma/\sqrt{n}$$
+```{r}
+## Descriptive statistics
+# 95% CI for mean
+n <- 20
+xbar <- 3159
+sd <- 220
+
+# calculate standard error
+se <- sd/(sqrt(n))
+E <- 1.96*se
+# or alternatively, E <- qnorm(0.975)*se
+ci<- xbar + c (-E, E)
+ci
+```
+
+The 95% CI is (3063, 3255). We are 95% sure that the true (population) mean lies between 3063 and 3255; if we were to undertake this study 100 times, 95 of the CIs would include the true mean.
+
+If we would like a higher level of precision we might want to obtain 99% confidence intervals:
+
+```{r}
+## Descriptive statistics
+# 99% CI for mean
+n <- 20
+xbar <- 3159
+sd <- 220
+
+# calculate standard error
+se <- sd/(sqrt(n))
+E <- qnorm(0.995)*se
+ci<- xbar + c (-E, E)
+ci
+```
+
+The 99% CI is (3032, 3286). What is the interpretation of this interval? 
+
+The table below shows the birthweight summary statistics by an observational study on the safety of pertussis vaccination in pregnant women in the UK ^[Donegan K, King B and Bryan P. Safety of pertussis vaccination in pregnant women in UK: observational study. BMJ 2014;349:g4219 doi: 10.1136/bmj.g4219 (Published 11 July 2014].
+
+    Calculate the 95% confidence interval for mean birthweight for babies of mothers: 
+    a) who were vaccine; and 
+    b) who were not vaccinated
+
