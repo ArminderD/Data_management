@@ -627,9 +627,23 @@ ci
 
 The 99% CI is (3032, 3286). What is the interpretation of this interval? 
 
-The table below shows the birthweight summary statistics by an observational study on the safety of pertussis vaccination in pregnant women in the UK ^[Donegan K, King B and Bryan P. Safety of pertussis vaccination in pregnant women in UK: observational study. BMJ 2014;349:g4219 doi: 10.1136/bmj.g4219 (Published 11 July 2014].
+Table 3 shows the birthweight summary statistics by an observational study on the safety of pertussis vaccination in pregnant women in the UK ^[Donegan K, King B and Bryan P. Safety of pertussis vaccination in pregnant women in UK: observational study. BMJ 2014;349:g4219 doi: 10.1136/bmj.g4219 (Published 11 July 2014].
 
     Calculate the 95% confidence interval for mean birthweight for babies of mothers: 
     a) who were vaccine; and 
     b) who were not vaccinated
 
+**Table1:**  Birthweight summary statistics 
+
+```{r, fig.align='center', out.width = "800px", echo=FALSE}
+knitr::include_graphics("Table3_summary.png")
+```
+
+    We want to estimate the proportion (%) of Australian adults who have diabetes with 95% CI. Of a sample of 11247 Australian adults, 844 have diabetes. What is the proportion and 95% CI?
+
+Like the 95% CI for mean, we need to construct the 95% CI for proportion. The 95% confidence interval for the population proportion can be expressed as:
+
+$$\hat{p}\pm z\sqrt{p}{(1-p)}}$$
+
+
+$$\hat{p}\pm z\sqrt{p}{(1-p)}}$$
