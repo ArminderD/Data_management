@@ -69,6 +69,10 @@ if (!require(ggplot2)) {
     install.packages("ggplot2")
     require(ggplot2)
 }
+if (!require(dplyr)) {
+    install.packages("dplyr")
+    require(dplyr)
+}
 ``` 
 
 ### Introduction to R and Describing Data
@@ -143,7 +147,7 @@ The first dataset we will be using has been modified from a dataset for 581 pati
 The dataset is available as **meningitis.csv** dataset: A comma delimited Excel file which can be imported into R or other statistical programs; this type of file has a .csv extension. 
 
 
-**Table1:**  Format of meningitis dataset
+**Table 1:**  Format of meningitis dataset
 
 ```{r, fig.align='center', out.width = "750px", echo=FALSE}
 knitr::include_graphics("table1_formatting.png")
@@ -633,7 +637,7 @@ Table 3 shows the birthweight summary statistics by an observational study on th
     a) who were vaccine; and 
     b) who were not vaccinated
 
-**Table1:**  Birthweight summary statistics 
+**Table 3:**  Birthweight summary statistics 
 
 ```{r, fig.align='center', out.width = "800px", echo=FALSE}
 knitr::include_graphics("Table3_summary.png")
@@ -691,3 +695,346 @@ ci
 The 95% CI is (13.1, 14.6). 
 
     How would you change the above code to generate the 99% CIs?
+
+We may be interested in obtaining the CI for a particular subgroup: the following code provide the 95% CI for mean white blood count in black patients.
+
+```{r}
+# 95% CI for wbc
+wbc <- na.omit(meningitis$wbc[which(meningitis$race==1)])
+xbar <- mean(wbc) # no need for the meningitis$ as we have created a new wbc above
+n <- length(wbc)
+sd <- sd(wbc)
+
+# calculate standard error
+se <- sd/(sqrt(n))
+se
+E <- 1.96*se
+# or alternatively, E <- qnorm(0.975)*se
+ci<- xbar + c (-E, E)
+ci
+```
+
+We can also obtain separate CIs for subgroups; here we generate the 95% CIs by race.To perform this analysis, we use the `%>%` operator.  `%>%` is an operator that pipes functions in order to improve readability and productivity as it's easier to follow the flow of multiple functions through these pipes than going backwards when multiple function are nested. We also require the package `dplyr` to proceed with this analysis.
+
+```{r}
+require(dplyr)
+meningitis %>%
+  group_by(race) %>% # for each race
+  summarize(obs = length(na.omit(wbc)), # calculates number of observations
+            mean=mean(na.omit(wbc)), # calculates mean
+            SE = sd(na.omit(wbc))/sqrt(obs), # calculates SE in each category
+            # the below calculate the 95% CI for mean wbc in each category
+            lower = mean - qnorm(0.975)*SE, 
+            upper = mean + qnorm(0.975)*SE)
+
+```
+
+Please note that the output might differ from that obtained using STATA.
+
+    Obtain the 99% CI for mean Total leukocytes in CFS: a) overall; and b) for males.
+
+#### CI for a Proportion
+
+Using the meningitis data, we want to estimate the proportion (or %) of patients who had acute bacterial meningitis, with 95% CI. 
+
+```{r}
+# 95% CI for proportion - abm
+abm <- na.omit(meningitis$abm)
+n <- length(abm)
+n
+k <- sum(abm ==1)
+pbar <- k/n
+pbar
+# calculate standard error
+se <- sqrt(pbar*(1-pbar)/n)
+se # 'prints (shows) the se value
+E <- 1.96*se
+# or alternatively, E <- qnorm(0.975)*se
+ci<- pbar + c (-E, E)
+ci
+```
+
+
+The patients who had acute bacterial meningitis is 0.43 (or 43%) with 95% CI (0.39, 0.48), or (39%, 48%).
+
+
+### Hypothesis Test for a Single Mean
+
+A hypothesis test for a single mean involves comparing the sample mean to a population (or hypothesised mean). 
+
+##### Using Summary Data
+
+Please note that this is not possible to do in R and the researcher would have to calculate test statistics manually as a function is not available to perform this as in STATA. 
+
+    Open the meningitis data in R. We want to test the hypothesis that the mean white blood cell count differs to the population mean of 11 (the upper limit of normal). 
+
+```{r}
+t.test(meningitis$wbc, mu =11)
+
+```
+
+
+The value of the t-statistic is 7.026, for 439 degrees of freedom and a two-tailed p-value of < 0.0001. Using a significance level of 5% (or even much smaller!!!) we reject the null hypothesis and conclude that the mean white blood cell count in patients with meningitis is statistically significantly higher than the population mean. 
+
+If it was appropriate we could undertake the hypothesis test separately for males and females by subsetting our original dataset. 
+
+```{r}
+# we create a new dataset “A” with observations for only males (sex==1)
+A <- subset(meningitis, meningitis$sex==1)
+
+#run the t.test() command on the new dataset
+t.test(A$wbc, mu = 11)
+```
+
+For males, the value of the t-statistic is 4.807, for 240 degrees of freedom and a two-tailed p-value of < 0.0001. Using a significance level of 5% we reject the null hypothesis and conclude that the mean white blood cell count for males with meningitis patients is statistically significantly higher than the population mean.
+
+
+### Hypothesis Test for a Single Proportion
+
+
+#### Using Summary Data
+
+`prop.test` can be used for testing the null that the proportions (probabilities of success) in several groups are the same, or that they equal certain given values.
+
+    We want to test the hypothesis that the prevalence of diabetes in a sample of adult smokers is different to the prevalence in the Australian population, which is known to be 7.5%. In a sample of 305 adult smokers, 31 had diabetes. 
+    
+    Is this consistent  with the national prevalence? 
+
+```{r}
+prop.test(31, 305, p=0.075, correct = FALSE)
+
+```
+
+The value of the chi-square statistic is 3.1199, with two-tailed p value of 0.077. Using a significance level of 5%, we failed to reject the null hypothesis and conclude that the prevalence of diabetes in smokers is similar to that in the general population.
+
+#### Using a Dataset
+
+    Using the meningitis data, undertake an appropriate hypothesis test to determine whether the proportion of patients with acute bacterial meningitis is different to 50%, using a 5% significance level. 
+
+```{r}
+x <- table(meningitis$abm)
+x
+prop.test(x,p=0.5)
+```
+
+The value of the chi-square statistic is 8.6946, with two-tailed p value of 0.0031 Using a significance level of 5%, we reject the null hypothesis and conclude that the proportion of patients with acute bacterial meningitis is statistically significantly greater than 50%. Please note that the output might differ from that obtained using STATA.
+
+
+### Confidence Intervals and Hypothesis Tests for a Difference in Means
+
+#### Using Summary Data
+Please note that this is not possible to do in R and the researcher would have to calculate test statistics manually as a function is not available to perform this as in STATA. 
+
+
+#### Using a Dataset
+
+    Using the meningitis dataset obtain the 95% CI and undertake a hypothesis test for the difference in white blood cell count between patients with and without acute bacterial meningitis.
+
+We first slide the data to get wbc counts for patients with and without abm separately.
+
+```{r}
+# two sample test of means
+L <- meningitis$abm == 0
+# wbc for those without abm
+wbc.noabm <- meningitis[L,]$wbc
+# wbc for those with abm
+wbc.abm <- meningitis[!L,]$wbc
+
+t.test(wbc.noabm, wbc.abm)
+```
+
+The difference in means white blood cell count between patients without and those with acute bacterial meningitis is – 5.98, with 95% CI (-7.61, -4.35). The value of the t statistic is -7.21, with 226.6 degrees of freedom and a p value < 0.0001.
+
+
+    What do you conclude about the relationship between white blood cell count between patients and acute bacterial meningitis? Why? What do the negative values for the difference between means, 95% CI, and t-statistic mean?
+
+### Confidence Intervals and Hypothesis Tests for a Difference in Proportions
+
+#### Using Summary Data
+
+You are a public health official investigating an outbreak of gastroenteritis at a festival. You suspect the cause is soft-serve ice cream. As part of your investigation into the outbreak you collect the following data.
+
+```{r, fig.align='center', out.width = "750px", echo=FALSE}
+knitr::include_graphics("gastro_data.png")
+``` 
+
+    What is the difference in the proportion of individuals who developed gastroenteritis between those who did and did not each ice cream, with 95% CI?
+
+```{r}
+res <-prop.test(x=c(170,10), n=c(250,80))
+res
+
+```
+
+    What is the difference in proportion of festival-goers who did and did not eat ice cream who developed gastroenteritis and the 95% CI? 
+    
+    Provide an interpretation of these values. 
+    
+    What are the values of the test statistic and how would you interpret these? 
+    
+    What do you conclude about the relationship between eating ice-cream and developing gastroenteritis? 
+
+In the meningitis dataset we want to obtain an estimate of the difference in the proportion of males and females who had acute bacterial meningitis. 
+
+```{r}
+prop.test(table(meningitis$abm, meningitis$sex), correct = F)
+```
+
+    What is the difference in proportion of males and females who had acute bacterial meningitis, and the 95% CI, and what are the results of the hypothesis test? Provide an interpretation of these values and your conclusion regarding the relationship between sex and acute bacterial meningitis. 
+
+
+    Using the meningitis dataset, obtain appropriate measure of effect and Confidence Intervals, and undertake appropriate hypotheses tests to investigate the relationship a) race; b) blood glucose and acute bacterial meningitis using a 1% significance level.
+    
+
+
+### Data Management – Managing variables
+
+This section describes various processes and commands for checking, managing and manipulating variables. We will use different datasets to that used previously. The first dataset is based on notifications of pertussis from 2012. Cases were notified by the treating clinician and/or laboratory. Each notified case was then called by a public health nurse of surveillance officer working at the regional public health unit. A standardized questionnaire was administered which asked about certain demographic details, date of illness onset and whether anyone else in their contact circle had been ill with a similar illness before the case got sick (essentially trying to identify the source). The dataset is called pertussis.csv and the data format is provided below (Table 4)
+
+**Table 4:** Format of pertussis surveillance dataset
+
+```{r, fig.align='center', out.width = "650px", echo=FALSE}
+knitr::include_graphics("Table4_summary.png")
+``` 
+
+Open the dataset as you did with the meningitis data earlier, describe the data and obtain the codebook for all variables. 
+
+```{r}
+pertussis <- read.csv("pertussis.csv")
+```
+
+### Creating new variables 
+
+We often want to create new variables in our dataset; for example categorising a continuous variable, or combining two or more variables, such as generating BMI from weight and height. We want to create a categorical variable from age, with categories of < 10, 10-19, 20-49, 50+.
+
+```{r}
+pertussis$agegroup<-ifelse(pertussis$age <= 9,rr2 <- 1,
+                      ifelse(pertussis$age>=10 & pertussis$age<=19,rr2<-2,
+                        ifelse(pertussis$age>=20 & pertussis$age<=49,rr2<-3,
+                                        rr2 <- 4 )))
+
+```
+
+You should check any new variable created including tabulating against the original variable where appropriate. 
+
+```{r}
+table(pertussis$agegroup)
+table(pertussis$age,pertussis$agegroup) # age groups = 1-4
+```
+
+We can see that age group has been correctly generated. Note the missing values for **agegroup** corresponding to the five missing values for age.
+
+### Missing Values 
+
+In the dataset above there are several cells without any numbers, but which have a “NA”. These represent missing values in R. They could represent questions which have not been answered by participants, or that are not applicable.
+
+ A not applicable response may be relevant for example for: 
+ 
++	Responses for males in a general population survey for questions asking about mammography screening or pap smears; or 
++	Questions asking about the number of cigarettes smoked, where participants have previously indicated that they are non-smokers 
+
+Many datasets use actual numbers to represent missing values or not applicable responses: values such as 9, 99, 999 – 9, etc are often used to represent missing values and 8, 88, 888, -8 to represent not applicable responses; a 0 can also sometimes be used 
+
+Observations with missing values are generally excluded from analysis. If your dataset has numerical values representing missing data you will need to change these values to “NA” Otherwise R will think that the values are meaningful numbers and include these data in the analysis – you can end up with all sorts of strange results from this! 
+
+The data format for the pertussis dataset, provided in the table above, indicate that some variables have missing values coded as 9. To ensure that these missing values are not included in analyses, we should change these values to NA. 
+
+```{r}
+table(pertussis$mother)
+pertussis$mother[pertussis$mother==9] <-NA
+```
+
+We should then check the revised variable.
+
+```{r}
+table(pertussis$mother)
+```
+
+Unlike Stata, R does not consider a missing value to be a very large value (like infinity). So missing values do not end up being allocated a category. While Stata considers a missing value (.) to be a very large number, SAS treats missing values as infinitesimally small number. 
+
+When creating new variables you also need to be very careful with </> and <= / >=. For example if consider the following syntax to generate age group:
+
+```{r, eval=FALSE}
+pertussis$agegroup<-ifelse(pertussis$age <= 9,rr2 <- 1,
+                      ifelse(pertussis$age>10 & pertussis$age<=19)
+```
+
+
+The first age category includes those aged 9 or under, and the second age category includes those aged more than 10: we have excluded 10 year olds from the age category! You can come across similar problems due to rounding errors, depending on how the variables / numbers are stored. We won’t discuss this in any more detail here, but any such problems should be highlighted / identified by cross tabulating newly created variables with the original variable, and by checking the number of missing values in all variables.
+
+
+### Labelling and formatting variables
+
+We can make our data and results easier to interpret by labelling the variables (ie assigning a more meaningful name) and allocating names to numeric categories of a variable. Both of these processes can be undertaken using different version of the label command.
+
+To give a variable a more meaningful name or label:
+
+```{r, eval=FALSE}
+names(pertussis)[8] <= "type  of laboratory confirmation"
+table(pertussis$howconfirmed)
+```
+
+When we created the categorical age variable above, we allocated values 1, 2, 3, 4 to the categories. We could have created a string variable with categories “0-9”, “10-19”, “20-49”, “50+”, however some analyses require numeric rather than string variables. It is generally preferable to have numeric rather than strong variable (although sometimes it can be useful to have id variables stored as string). To be able to easily see what each category represents, we allocated labels to the categories. This is a twostep process. Firstly we define the label, and then we allocate it to the relevant variable/ variables. We can allocate the same label format to multiple variables; for example if we have numerous variable with values of 1 or 0 representing yes or no, we can create one label and allocated it to all of the 1/0 variables. You do need to be careful though, because sometimes, even within the same dataset, some yes/no variable can be coded as 1/0 and others as 1/2.  We will now create and allocate a label for **agegroup**. 
+
+```{r}
+pertussis$agegroup <- factor(pertussis$agegroup, levels=c(1,2,3,4), labels = c("0-9", "10-19", "20-49", "50+"))
+table(pertussis$agegroup)
+```
+
+### Types of variables
+
+Sometimes you may want to change the type of variable, for example sex may be a string variable (male or female) and you need to convert to numeric to be able to perform a particular procedure or undertake specific analysis. The following commands can be used to convert string variable to numeric or vice versa, and they all involve generating a new variable These commands will not be considered in detail; if you want to use these then you will need to check the R help menu.
+
+`is.numeric()`, `is.character()`, `as.numeric()`, `as.character()` are some examples of functions to convert data types.
+
+### Checking for duplicates
+
+`duplicated()` determines which elements of a vector or data frame are duplicates of elements with smaller subscripts, and returns a logical vector indicating which elements (rows) are duplicates. `anyDuplicated()` is a “generalized” more efficient shortcut for `any(duplicated())`.
+However, this command when used alone will return only `TRUE` or `FALSE` values for any duplicates in the dataset. To extract duplicate values from the dataset, we need to use this command effectively. We will now check whether there are duplicate ids in the pertussis dataset:
+
+```{r, eval=FALSE}
+pertussis[duplicated(pertussis$id),]
+```
+
+This command extract all rows with duplicate id values in the dataset. It appears that there are quite a few duplicate ids in this dataset. However we also have notification date, so maybe the some individuals have multiple notifications. We should therefore check for duplicates with the same combination of id and notification date.
+
+
+```{r, eval=FALSE}
+pertussis[duplicated(c(is.na(pertussis$id),is.na(pertussis$notificationdate))),]
+```
+
+If you want to only know the duplicated ids, use the following code:
+
+```{r, eval=FALSE}
+pertussis[duplicated(pertussis$id),][1]
+```
+
+### Dealing with dates 
+
+In order to perform any operations on date variables, for example subtracting admission date from date of discharge to determine long of stay in hospital, dates need to have a numeric value. R stores dates as a numeric value that is the number of days since 1st January 1960. This date is just used as a reference point by R (Stata and SAS).
+Dates prior to 1st January 1960 have a negative number and dates after this date have a positive number. 
+
+Dates are often entered in string format and therefore must be converted into the R date format, which involves generating a new specific date variable from the string variable. 
+
+Sometimes dates can be entered as three separate variables: one variable for day, one for month and one for year. R has a range of date and time formats; you need to determine the most appropriate format for your data, and this will depend on whether you have date and time, date only, and how the dates have been entered: dd/mm/yy, mm/dd/yy, dd/mm/yyyy, whether as separate variables for day, month and year, etc. 
+
+`Sys.Date( )` returns today's date. 
+`date()` returns the current date and time.
+The following symbols can be used with the `format( )` function to print dates.
+
+The meningitis dataset had one variable for month of admission and a separate variable for year of admission. The pertussis dataset has three date variables: birthdate (date of birth), notificationdate (date of notification) and onsetdate (date of onset). 
+
+
+The following symbols can be used with the `format( )` function to print dates:
+
+```{r, fig.align='center', out.width = "350px", echo=FALSE}
+knitr::include_graphics("Table5_format.png")
+``` 
+
+The variables have all been entered as one date, as string variables and in the format dd/mm/yyyy. We have had to guess the format here, but generally you would expect to have a data dictionary of some kind which specifies the structure of the dataset. The following syntax will generate a date variable for date of birth:
+
+```{r}
+pertussis$date_of_birth <-as.Date(pertussis$birthdate, "%d/%m/%Y")
+pertussis$date_of_birth <- as.numeric(pertussis$date_of_birth)
+```
+
