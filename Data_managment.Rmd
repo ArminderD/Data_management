@@ -643,7 +643,51 @@ knitr::include_graphics("Table3_summary.png")
 
 Like the 95% CI for mean, we need to construct the 95% CI for proportion. The 95% confidence interval for the population proportion can be expressed as:
 
-$$\hat{p}\pm z\sqrt{p}{(1-p)}}$$
 
 
-$$\hat{p}\pm z\sqrt{p}{(1-p)}}$$
+$$\hat{p}\pm z\sqrt\frac{\hat{p}(1-\hat{p})}{n}$$
+
+```{r}
+# 95% CI for proportion
+n <- 11247
+k <- 844
+pbar <- k/n
+
+# calculate standard error
+se <- sqrt(pbar*(1-pbar)/n)
+se # 'prints (shows) the se value
+E <- 1.96*se
+# or alternatively, E <- qnorm(0.975)*se
+ci<- pbar + c (-E, E)
+ci
+```
+
+The estimate of the proportion of Australian adults with diabetes is 0.075 (or 7.5%) with 95% CI (0.070, 0.080). How do we interpret this CI?
+
+### Using a Dataset 
+
+You can also obtain a confidence interval for a mean for a variable in a dataset. 
+
+#### CI for a Mean
+
+    Open the meningitis dataset in R. We want the 95% confidence interval for mean white blood cell count.
+
+```{r}
+# 95% CI for wbc
+wbc <- na.omit(meningitis$wbc)
+xbar <- mean(wbc) # no need for the meningitis$ as we have created a new wbc above
+n <- length(wbc)
+sd <- sd(wbc)
+
+# calculate standard error
+se <- sd/(sqrt(n))
+se
+E <- 1.96*se
+# or alternatively, E <- qnorm(0.975)*se
+ci<- xbar + c (-E, E)
+ci
+```
+
+The 95% CI is (13.1, 14.6). 
+
+    How would you change the above code to generate the 99% CIs?
