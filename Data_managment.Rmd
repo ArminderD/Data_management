@@ -73,6 +73,10 @@ if (!require(dplyr)) {
     install.packages("dplyr")
     require(dplyr)
 }
+if (!require(reshape)) {
+    install.packages("reshape")
+    require(reshape)
+}
 ``` 
 
 ### Introduction to R and Describing Data
@@ -540,7 +544,8 @@ legend(1,195, legend = c("Male", "Female"), col = c("Red","Blue"), pch = c(21, 1
 
 ```
 
-    Play around with generation of scatter plots of white blood count versus total leukocytes separately for patients with and without acute bacterial meningitis. Try and change the colour and type of markers, axes, title and legends.
+    Play around with generation of scatter plots of white blood count versus total leukocytes separately for patients with and without acute bacterial meningitis. Try and change the colour and type of markers, axes, title and 
+    legends.
 
 
 ### Saving results and commands 
@@ -643,7 +648,8 @@ Table 3 shows the birthweight summary statistics by an observational study on th
 knitr::include_graphics("Table3_summary.png")
 ```
 
-    We want to estimate the proportion (%) of Australian adults who have diabetes with 95% CI. Of a sample of 11247 Australian adults, 844 have diabetes. What is the proportion and 95% CI?
+    We want to estimate the proportion (%) of Australian adults who have diabetes with 95% CI. Of a sample of 11247 
+    Australian adults, 844 have diabetes. What is the proportion and 95% CI?
 
 Like the 95% CI for mean, we need to construct the 95% CI for proportion. The 95% confidence interval for the population proportion can be expressed as:
 
@@ -796,9 +802,10 @@ For males, the value of the t-statistic is 4.807, for 240 degrees of freedom and
 
 `prop.test` can be used for testing the null that the proportions (probabilities of success) in several groups are the same, or that they equal certain given values.
 
-    We want to test the hypothesis that the prevalence of diabetes in a sample of adult smokers is different to the prevalence in the Australian population, which is known to be 7.5%. In a sample of 305 adult smokers, 31 had diabetes. 
+    We want to test the hypothesis that the prevalence of diabetes in a sample of adult smokers is different to the prevalence in the Australian population, which is known to be 7.5%. In a sample of 305 adult smokers, 31 had 
+    diabetes. 
     
-    Is this consistent  with the national prevalence? 
+    Is this consistent with the national prevalence? 
 
 ```{r}
 prop.test(31, 305, p=0.075, correct = FALSE)
@@ -809,7 +816,8 @@ The value of the chi-square statistic is 3.1199, with two-tailed p value of 0.07
 
 #### Using a Dataset
 
-    Using the meningitis data, undertake an appropriate hypothesis test to determine whether the proportion of patients with acute bacterial meningitis is different to 50%, using a 5% significance level. 
+    Using the meningitis data, undertake an appropriate hypothesis test to determine whether the proportion of 
+    patients with acute bacterial meningitis is different to 50%, using a 5% significance level. 
 
 ```{r}
 x <- table(meningitis$abm)
@@ -846,7 +854,8 @@ t.test(wbc.noabm, wbc.abm)
 The difference in means white blood cell count between patients without and those with acute bacterial meningitis is – 5.98, with 95% CI (-7.61, -4.35). The value of the t statistic is -7.21, with 226.6 degrees of freedom and a p value < 0.0001.
 
 
-    What do you conclude about the relationship between white blood cell count between patients and acute bacterial meningitis? Why? What do the negative values for the difference between means, 95% CI, and t-statistic mean?
+    What do you conclude about the relationship between white blood cell count between patients and acute bacterial 
+    meningitis? Why? What do the negative values for the difference between means, 95% CI, and t-statistic mean?
 
 ### Confidence Intervals and Hypothesis Tests for a Difference in Proportions
 
@@ -858,7 +867,8 @@ You are a public health official investigating an outbreak of gastroenteritis at
 knitr::include_graphics("gastro_data.png")
 ``` 
 
-    What is the difference in the proportion of individuals who developed gastroenteritis between those who did and did not each ice cream, with 95% CI?
+    What is the difference in the proportion of individuals who developed gastroenteritis between those who did and 
+    did not each ice cream, with 95% CI?
 
 ```{r}
 res <-prop.test(x=c(170,10), n=c(250,80))
@@ -866,7 +876,8 @@ res
 
 ```
 
-    What is the difference in proportion of festival-goers who did and did not eat ice cream who developed gastroenteritis and the 95% CI? 
+    What is the difference in proportion of festival-goers who did and did not eat ice cream who developed 
+    gastroenteritis and the 95% CI? 
     
     Provide an interpretation of these values. 
     
@@ -880,10 +891,13 @@ In the meningitis dataset we want to obtain an estimate of the difference in the
 prop.test(table(meningitis$abm, meningitis$sex), correct = F)
 ```
 
-    What is the difference in proportion of males and females who had acute bacterial meningitis, and the 95% CI, and what are the results of the hypothesis test? Provide an interpretation of these values and your conclusion regarding the relationship between sex and acute bacterial meningitis. 
+    What is the difference in proportion of males and females who had acute bacterial meningitis, and the 95% CI, and what are the results of the hypothesis test? Provide an interpretation of these values and your conclusion 
+    regarding the relationship between sex and acute bacterial meningitis. 
 
 
-    Using the meningitis dataset, obtain appropriate measure of effect and Confidence Intervals, and undertake appropriate hypotheses tests to investigate the relationship a) race; b) blood glucose and acute bacterial meningitis using a 1% significance level.
+    Using the meningitis dataset, obtain appropriate measure of effect and Confidence Intervals, and undertake 
+    appropriate hypotheses tests to investigate the relationship a) race; b) blood glucose and acute bacterial 
+    meningitis using a 1% significance level.
     
 
 
@@ -1035,6 +1049,189 @@ The variables have all been entered as one date, as string variables and in the 
 
 ```{r}
 pertussis$date_of_birth <-as.Date(pertussis$birthdate, "%d/%m/%Y")
-pertussis$date_of_birth <- as.numeric(pertussis$date_of_birth)
+pertussis$date_of_birth <- as.numeric(pertussis$date_of_birth) # converts the date into the internally stored form
 ```
 
+Now let’s see what our new variable looks like; we will list it with the original birthdate string variable and age. Note that the “1:10” statement lists the first 10 observation in the dataset and “c(1,4,15)” lists the column numbers to be displayed in the output. 
+
+```{r}
+pertussis[1:10, c(1,4,16)] # or replace '16' with '15' if agegroup was not added as a variable 
+```
+
+OK, we can see that our date_of_birth variable is numeric representing the number of days since January 1st, 1960 (feel free to check this!). Individuals born before January 1st, 1960 have a negative value for date. This will be good for any calculations involving dates, but not particularly helpful to us as we can’t really easily tell what the date. We can format the date_of_birth variable so that it is displayed in a more palatable format (but still retains its number value for manipulation). This has been shown below and can be done using the `format` command in R. 
+
+```{r}
+pertussis$date_of_birth <-as.Date(pertussis$birthdate, "%d/%m/%Y")
+pertussis$date_of_birth <- format(pertussis$date_of_birth, "%B/%d/%Y")
+pertussis[1:5, c(1,4,16)]
+```
+
+Date_of_birth is now displayed in standard, readable date format. Dealing with dates can be quite complicated, and there is quite a bit of documentation in R on this, so if you are doing anything more complex than what we have just done you should read this carefully.
+
+    Generate date variables for notification date and onset date and calculate the time between onset and notification.
+
+
+### Data checking and cleaning
+
+It is important that all data should be carefully checked before undertaking any analysis. Even though what we really want to do is a complicated multiple regression, we have to hold back until we have done the seemingly mundane, but absolutely essential data checking. There are a range of standard checks that should be undertaken, including, but not necessarily limited to the following: 
+
+* Check that the total number of observations are as expected (it is surprising how often you can “lose” participants) 
+
+* Check that all expected variables are included 
+
+*	Check for duplicates and manage appropriately 
+
+*	Tabulate all variables – particularly categorical but can also be useful to look at all of the values of continuous variables, as long as there are not too many different values.
+
+*	It is important that all data should be carefully checked before undertaking any analysis. Even though what we really want to do is a complicated multiple regression, we have to hold back until we have done the seemingly mundane, but absolutely essential data checking. There are a range of standard checks that should be undertaken, including, but not necessarily limited to the following: 
+
+    +	Check that the total number of observations are as expected (it is surprising how often you can “lose” participants) 
+    +	Check that all expected variables are included 
+    +	Check for duplicates and manage appropriately 
+    +	Summarise continuous variables and generate appropriate graphs (histogram, boxplot, etc) 
+    +	Check for out of range or unusual values 
+    +	Check the code for missing, not applicable, etc – you may need to change these to actual missing values in R (eg if missing is coded as 9, then this will be analysed as an actual value; you need to set to the R missing code of “NA”) 
+    +	Check that variables are the appropriate type for analyses; you may need to create numeric variables from string variables 
+    
+
+*	Whenever you generate a new variable, always tabulate or undertake some other appropriate check against the original variable/s 
+
+*	Assign meaningful names to variables and generate labels for categorical variable (eg if sex is coded as 0 or 1, generate a sex format and allocate label of male and female to the appropriate categories) 
+
+*	Undertake appropriate logic checks; for example:
+    +	Have females completed questions on prostate cancer screening?
+    +	Have participants who have stated that they are non-smokers specified the number of cigarettes smoked per day
+
+*	Undertake bivariate checks before doing more complex regression analyses 
+
+*	Check assumptions of all test and analyses undertaken 
+
+*	Always check any comments that R provides in the output (R console) 
+
+* Check the number of observations for all of your analyses (as per the comment for the first point - it is surprising how often you can “lose” participants!) 
+
+
+    Undertake some of the data checking / cleaning procedures for the pertussis dataset: check for missing values and recode as appropriate, generate frequency tables, summary statistics and graphs as appropriate, label the variables and values of categorical variables. You should also try categorising some of the continuous variables. 
+
+
+### Data Management in R (II) – Managing datasets
+
+Often data for a study are provided in more than one dataset which need to be combined in some way. Different datasets could represent: 
+
+*	The same (or similar) data taken from different sites – for example data from multiple hospitals or public health units 
+
+* Different types of data - for example clinical measures and survey data 
+
+* The same data taken at different times – for example follow-up data for longitudinal studies or clinical trials 
+
+* The design of the study database – for example multiple data tables in an ACCESS or other database 
+
+* Messy data! 
+
+Even if we have a single or combined dataset, it may not be in the format that we need for a specific analysis. For example we may have a dataset which includes baseline and follow-up data, with a different observation (or record or “line” of data) for each set of measurements: ie we have two observations for each individual and we want to combine these into one observation or record per person. 
+
+We can (relatively) easily do dataset management and manipulation in R, however it is crucial that we are very careful, document every step of the process and make sure to check everything (for example do we have the number of records that we think we should have?). 
+
+This section describes how to go about combining datasets by: 
+
+1.  Appending: adding one dataset to the end of another, which would be appropriate for example if we had the same type of data from different sites (different hospitals or different public health units) which we wanted to combine 
+2.  Merging: if we have different types of data (clinical and survey data) or the same data at different times (longitudinal or follow-up data) which we want to combine 
+
+The data for this exercise are from a study of treatment of post-natal depression ^[Gregoire AJ, Kumar R, Everitt B, Henderson AF, Studd JW. Transdermal oestrogen for treatment of severe postnatal depression. Lancet. 1996 Apr 6;347(9006):930-3]. Sixty-one women with major depression were randomised to receive active treatment (1) or placebo (0) and had a baseline assessment for depression. They were then assessed monthly for six months. The outcome of interest was the score on the Edinburgh postnatal depression scale (EPDS). 
+
+The data, which have been slightly modified from the original data, are included in several different files. The data for the first follow-up were provided in two separate files, depress1a.csv and depress1b.csv files. Data for time 2 and time 3 follow-up are included in depress2.csv and depress3b.csv, respectively. The data for follow-up times 4 and 5 have already been appended into a single file – depress4_5.csv, while the 6 month follow-up data are included in two separate files (similar to time 1 data): depress6a.csv and depress6b.csv. The structure of the datasets is shown in Table 5 below.
+
+**Table 5:** Format of depression datasets
+
+```{r, fig.align='center', out.width = "650px", echo=FALSE}
+knitr::include_graphics("Table6_depress_dataformat.png")
+``` 
+
+
+### Appending datasets 
+
+**Append** – adds cases/observations to a dataset. This document will use the `rbind` function. Appending two datasets require that both have variables with exactly the same name. If using categorical data make sure the categories on both datasets refer to exactly the same thing (i.e. 1 “Agree”, 2”Disagree”, 3 “DK” on both).
+
+
+```{r}
+# Read in the data files
+depress1a <- read.csv("depress1a.csv")
+depress1b <- read.csv("depress1b.csv")
+depress2 <- read.csv("depress2.csv")
+depress3b <- read.csv("depress3b.csv")
+depress4_5 <- read.csv("depress4_5.csv")
+depress6a <- read.csv("depress6a.csv")
+depress6b <- read.csv("depress6b.csv")
+```
+
+We want to append the two datasets for first follow-up data (depress1a.dta and depress1b.dat) into a single file. You should have opened and checked each of the individual files before appending; however we will not do that here to save space. 
+
+```{r}
+depress1ab <- merge(depress1a, depress1b, by = c("subject", "group", "pre", "dep1"), all = TRUE)
+```
+
+Adding the option “all=TRUE” includes all cases from both datasets. The appended dataset now has 61 observations.
+
+
+
+#### Merging datasets
+
+The merge command requires specification of the variables to be merged or linked on. This is usually the identification number – in the postnatal depression study individuals are merged or linked using the patient identification number. Multiple variables can be used to link observations, for example patient id and date. `merge` merges only common cases to both datasets.
+
+Open the appended data for the first follow-up for the postnatal depression study. Then merge with the data for the second follow-up.
+
+```{r}
+depress1ab_2 <- merge(depress1ab, depress2, by = "subject", all= TRUE)
+```
+
+```{r, fig.align='center', out.width = "600px", echo=FALSE}
+knitr::include_graphics("figure_last.png")
+``` 
+
+Now let’s try merging with the time 3 data (depress3b.csv).
+
+```{r}
+depress1ab2_3b <- merge(depress1ab_2, depress3b , by = "subject", all= TRUE)
+```
+
+View the dataset by typing `View(depress1ab2_3b)`. Note: Subject 2,23,34,36 and 57 will be excluded from the dataset if you don’t specify all = TRUE.
+
+Subjects 5, 23, 34, 36 and 57 had data for follow-up times 1 and 2 but not for time 3: these observations may have been lost to follow-up (not uncommon in longitudinal studies). However subjects 134 and 136 were included in the time 3 follow-up but not time 1 or time 2. We might be suspicious that the id number for these two time 3 participants has been entered incorrect: 134 might be 34 and 136 might be 36. 
+
+In practice we should go back and carefully check this, although we have no additional information to investigate further for your example data.
+
+
+#### Reshaping datasets
+
+We now have generated a dataset which includes, in addition to the baseline or pre-intervention values of the Edinburgh postnatal depression scale, values of the EPDS at three follow times. All of the data for each individual are included in a single record or observation: this is called **wide** format. This is appropriate for some analyses, but other statistical methods require data in a format where there is one record for each individual for each measurement time: this is called **long** format. Hadley Wickhan has created a comprehensive package called `reshape` for this purpose. 
+
+As we have data in wide format and want to reshape to long format we will look at that process first, and discuss each component of the command. `reshape` is the name of the library used. We use the `melt` command (or procedure) to reshape the data.  Note that in our dataset the variables representing the EPDS scores at follow-up times 1, 2 and 3 are called dep1, dep2 and dep3. These variables all have the same name except that they end in a different number, representing the different measurement time. 
+
+```{r}
+# Install the 'reshape' package first if you don't already have, using: install.packages("reshape") 
+library(reshape)
+reshape <- melt(depress1ab2_3b, id = c("subject", "group", "pre"))
+#sort by subjects
+long <- reshape[order(reshape$subject),] # Then view the data by: View(long)
+```
+
+To reshape our current dataset from long to wide: 
+
+```{r}
+wide <- reshape(long, idvar = c("subject", "group", "pre"), timevar = "variable", direction = "wide")
+```
+
+Success! The dataset is not back to the original format; except that the variable names have now changed slightly, however this does not matter.
+
+
+    We will now combine the rest of the data for the Postnatal Depression Study and produce a final combined dataset in long format. There are various ways that this can be done but the following process is suggested: 
+    
+      1. Append the two 6 month follow-up datasets. 
+      2. Reshape the combined (appended) 4 and 5 month datasets from long to wide. 
+      3. Merge the combined (wide) dataset for the time 1, 2 and 3 month follow-up data you generated earlier with 
+      the (wide) 4 and 5 month follow-up dataset. 
+      4. Merge the now combined (wide) dataset for the 1-5 month follow-up data with the appended 6 month follow-up 
+      dataset. 
+      5. Reshape the (wide) combined 1-6 month follow-up dataset to long format. 
+
+    If you are feeling adventurous you might want to try one (or multiple) other methods of getting the data into the appropriate format.
