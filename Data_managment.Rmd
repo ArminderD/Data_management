@@ -11,6 +11,11 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
+
+
+This manual was created by Catherine D’Este and updated by Tambri Housen and Alice Richardson. The manual was originally created for use with Stata data analysis software, the conversion to R was conducted by Nidhi Menon and Arminder Deol. The manual was created for the [Australian Field Epidemiology Training Program – Masters of Philosophy (Applied Epidemiology)](https://rsph.anu.edu.au/study/master-degrees/master-philosophy-applied-epidemiology), Australian National University. CRICOS Provider No. 00120C
+
 ***
 ### Learning objectives
 
@@ -96,7 +101,6 @@ You need to communicate with R in a way that the program understands; i.e. you n
 
 Syntax, also sometimes referred to as “code” or “programming”, refers to the grammatical rules that you need to follow so that R understands what you want it to do. Syntax does not necessarily follow rules of English grammar! You tell R to do something by using the correct command or set of commands. An R command is a combination of syntax elements, expressed following the rules of ‘R language’. 
 
-This manual was created by Catherine D’Este and updated by Tambri Housen and Alice Richardson. The manual was originally created for use with Stata data analysis software, the conversion to R was conducted by Nidhi Menon and Arminder Deol. The manual was created for the [Australian Field Epidemiology Training Program – Masters of Philosophy (Applied Epidemiology)](https://rsph.anu.edu.au/study/master-degrees/master-philosophy-applied-epidemiology), Australian National University. CRICOS Provider No. 00120C
 
 ### R Studio
 
