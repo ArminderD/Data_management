@@ -30,14 +30,17 @@ This module provides an introduction to the R statistical package. On completion
 #### Textbook 
 +	Kirkwood B and Sterne J. Essential Medical Statistics, 2nd Edition. May 2003, ©2003, Wiley-Blackwell. 
 
-#### References 
-+	Donegan K, King B and Bryan P. Safety of pertussis vaccination in pregnant women in UK: observational study. BMJ 2014;349:g4219 doi: 10.1136/bmj.g4219 (Published 11 July 2014). 
-
-+	Gregoire AJ, Kumar R, Everitt B, Henderson AF, Studd JW. Transdermal oestrogen for treatment of severe postnatal depression. Lancet. 1996 Apr 6;347(9006):930-3. 
-
 + Rabe-Hesketh S and Everitt B. A Handbook of Statistical Analyses Using R; Fourth Edition. 2007, Chapman & Hall/CRC. 
 
-+ Spanos A, Harrell FE, Durack DT. Differential diagnosis of acute meningitis: An analysis of the predictive value of initial observations. JAMA, 1989; 262: 2700-2707. 
+#### References 
+
+[1] Spanos A, Harrell FE, Durack DT. Differential diagnosis of acute meningitis: An analysis of the predictive value of initial observations. JAMA, 1989; 262: 2700-2707. 
+
+[2] Donegan K, King B and Bryan P. Safety of pertussis vaccination in pregnant women in UK: observational study. BMJ 2014;349:g4219 doi: 10.1136/bmj.g4219 (Published 11 July 2014). 
+
+[3] Gregoire AJ, Kumar R, Everitt B, Henderson AF, Studd JW. Transdermal oestrogen for treatment of severe postnatal depression. Lancet. 1996 Apr 6;347(9006):930-3. 
+
+
 
 #### Datasets 
 
@@ -93,6 +96,7 @@ You need to communicate with R in a way that the program understands; i.e. you n
 
 Syntax, also sometimes referred to as “code” or “programming”, refers to the grammatical rules that you need to follow so that R understands what you want it to do. Syntax does not necessarily follow rules of English grammar! You tell R to do something by using the correct command or set of commands. An R command is a combination of syntax elements, expressed following the rules of ‘R language’. 
 
+This manual was created by Catherine D’Este and updated by Tambri Housen and Alice Richardson. The manual was originally created for use with Stata data analysis software, the conversion to R was conducted by Nidhi Menon and Arminder Deol. The manual was created for the [Australian Field Epidemiology Training Program – Masters of Philosophy (Applied Epidemiology)](https://rsph.anu.edu.au/study/master-degrees/master-philosophy-applied-epidemiology), Australian National University. CRICOS Provider No. 00120C
 
 ### R Studio
 
@@ -146,7 +150,7 @@ knitr::include_graphics("fig3_Rstudio_screenshot_2nd.png")
 
 ### Datasets
 
-The first dataset we will be using has been modified from a dataset for 581 patients with acute meningitis (Table 1). Data from a subset of 422 patients were used to examine factors associated with differentiating between acute viral or acute bacterial meningitis^[Spanos A, Harrell FE, Durack DT. Differential diagnosis of acute meningitis: An analysis of the predictive value of initial observations. JAMA, 1989; 262: 2700-2707]. The original dataset can be found at: http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/Cabm.html
+The first dataset we will be using has been modified from a dataset for 581 patients with acute meningitis (Table 1). Data from a subset of 422 patients were used to examine factors associated with differentiating between acute viral or acute bacterial meningitis [1]. The original dataset can be found at: http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/Cabm.html
 
 The dataset is available as **meningitis.csv** dataset: A comma delimited Excel file which can be imported into R or other statistical programs; this type of file has a .csv extension. 
 
@@ -636,7 +640,7 @@ ci
 
 The 99% CI is (3032, 3286). What is the interpretation of this interval? 
 
-Table 3 shows the birthweight summary statistics by an observational study on the safety of pertussis vaccination in pregnant women in the UK ^[Donegan K, King B and Bryan P. Safety of pertussis vaccination in pregnant women in UK: observational study. BMJ 2014;349:g4219 doi: 10.1136/bmj.g4219 (Published 11 July 2014].
+Table 3 shows the birthweight summary statistics by an observational study on the safety of pertussis vaccination in pregnant women in the UK [2].
 
     Calculate the 95% confidence interval for mean birthweight for babies of mothers: 
     a) who were vaccine; and 
@@ -1137,7 +1141,7 @@ This section describes how to go about combining datasets by:
 1.  Appending: adding one dataset to the end of another, which would be appropriate for example if we had the same type of data from different sites (different hospitals or different public health units) which we wanted to combine 
 2.  Merging: if we have different types of data (clinical and survey data) or the same data at different times (longitudinal or follow-up data) which we want to combine 
 
-The data for this exercise are from a study of treatment of post-natal depression ^[Gregoire AJ, Kumar R, Everitt B, Henderson AF, Studd JW. Transdermal oestrogen for treatment of severe postnatal depression. Lancet. 1996 Apr 6;347(9006):930-3]. Sixty-one women with major depression were randomised to receive active treatment (1) or placebo (0) and had a baseline assessment for depression. They were then assessed monthly for six months. The outcome of interest was the score on the Edinburgh postnatal depression scale (EPDS). 
+The data for this exercise are from a study of treatment of post-natal depression [3]. Sixty-one women with major depression were randomised to receive active treatment (1) or placebo (0) and had a baseline assessment for depression. They were then assessed monthly for six months. The outcome of interest was the score on the Edinburgh postnatal depression scale (EPDS). 
 
 The data, which have been slightly modified from the original data, are included in several different files. The data for the first follow-up were provided in two separate files, depress1a.csv and depress1b.csv files. Data for time 2 and time 3 follow-up are included in depress2.csv and depress3b.csv, respectively. The data for follow-up times 4 and 5 have already been appended into a single file – depress4_5.csv, while the 6 month follow-up data are included in two separate files (similar to time 1 data): depress6a.csv and depress6b.csv. The structure of the datasets is shown in Table 5 below.
 
