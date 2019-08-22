@@ -570,6 +570,12 @@ Graphs are not saved in the results window, or the log file, and need to be indi
 
 To do this click on Export and save as either Image or pdf. You can also copy the plot onto your clipboard.
 
+
+### R Scripts
+
+An R Script is the name of an R program file which includes all the R code and can be run at any time. To open an R script, click on the icon which looks like a blank page icon with a plus symbol. 
+
+
 ```{r, fig.align='center', out.width = "200px", echo=FALSE}
 knitr::include_graphics("r_scripts.png")
 ```
