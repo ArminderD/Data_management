@@ -301,8 +301,9 @@ prop.table(tab,1) # Row percentages
 
 ```
 
-    We have previously generated the table of acute bacterial meningitis by sex, with row percentages (ie the percentage of males and females who had acute bacterial meningitis). Now use R commands to generate column percentage; 
-    i.e. the % of those with and without acute bacterial meningitis who were female.
+    We have previously generated the table of acute bacterial meningitis by sex, with row percentages (i.e. the 
+    percentage of males and females who had acute bacterial meningitis). Now use R commands to generate column 
+    percentage; i.e. the % of those with and without acute bacterial meningitis who were female.
 
 ### The Summary Command
 
@@ -489,7 +490,8 @@ yfit <- yfit*diff(h$mids[1:2])*length(x)
 lines(xfit, yfit, col="blue", lwd=2)
 ```
 
-    Generate a graph of CSF glucose with 25 bins and a normal curve overlay. What does this graph show? Does it look reasonable? What might you interpret from this graph?
+    Generate a graph of CSF glucose with 25 bins and a normal curve overlay. What does this graph show? Does it look 
+    reasonable? What might you interpret from this graph?
 
 
 ```{r}
@@ -502,7 +504,8 @@ yfit <- yfit*diff(h$mids[1:2])*length(x)
 lines(xfit, yfit, col="red", lwd=2)
 ```
 
-    Using the command line rather than the graphics menu, generate a graph of CSF glucose with a normal curve overlay for: a) males only; b) for participants aged between 15 and 75.
+    Using the command line rather than the graphics menu, generate a graph of CSF glucose with a normal curve overlay 
+    for: a) males only; b) for participants aged between 15 and 75.
 
 ```{r}
 
@@ -776,7 +779,8 @@ A hypothesis test for a single mean involves comparing the sample mean to a popu
 
 Please note that this is not possible to do in R and the researcher would have to calculate test statistics manually as a function is not available to perform this as in STATA. 
 
-    Open the meningitis data in R. We want to test the hypothesis that the mean white blood cell count differs to the population mean of 11 (the upper limit of normal). 
+    Open the meningitis data in R. We want to test the hypothesis that the mean white blood cell count differs to the 
+    population mean of 11 (the upper limit of normal). 
 
 ```{r}
 t.test(meningitis$wbc, mu =11)
@@ -806,7 +810,8 @@ For males, the value of the t-statistic is 4.807, for 240 degrees of freedom and
 
 `prop.test` can be used for testing the null that the proportions (probabilities of success) in several groups are the same, or that they equal certain given values.
 
-    We want to test the hypothesis that the prevalence of diabetes in a sample of adult smokers is different to the prevalence in the Australian population, which is known to be 7.5%. In a sample of 305 adult smokers, 31 had 
+    We want to test the hypothesis that the prevalence of diabetes in a sample of adult smokers is different to the 
+    prevalence in the Australian population, which is known to be 7.5%. In a sample of 305 adult smokers, 31 had 
     diabetes. 
     
     Is this consistent with the national prevalence? 
@@ -840,7 +845,8 @@ Please note that this is not possible to do in R and the researcher would have t
 
 #### Using a Dataset
 
-    Using the meningitis dataset obtain the 95% CI and undertake a hypothesis test for the difference in white blood cell count between patients with and without acute bacterial meningitis.
+    Using the meningitis dataset obtain the 95% CI and undertake a hypothesis test for the difference in white blood 
+    cell count between patients with and without acute bacterial meningitis.
 
 We first slide the data to get wbc counts for patients with and without abm separately.
 
@@ -895,7 +901,8 @@ In the meningitis dataset we want to obtain an estimate of the difference in the
 prop.test(table(meningitis$abm, meningitis$sex), correct = F)
 ```
 
-    What is the difference in proportion of males and females who had acute bacterial meningitis, and the 95% CI, and what are the results of the hypothesis test? Provide an interpretation of these values and your conclusion 
+    What is the difference in proportion of males and females who had acute bacterial meningitis, and the 95% CI, 
+    and what are the results of the hypothesis test? Provide an interpretation of these values and your conclusion 
     regarding the relationship between sex and acute bacterial meningitis. 
 
 
@@ -1072,7 +1079,8 @@ pertussis[1:5, c(1,4,16)]
 
 Date_of_birth is now displayed in standard, readable date format. Dealing with dates can be quite complicated, and there is quite a bit of documentation in R on this, so if you are doing anything more complex than what we have just done you should read this carefully.
 
-    Generate date variables for notification date and onset date and calculate the time between onset and notification.
+    Generate date variables for notification date and onset date and calculate the time between onset and 
+    notification.
 
 
 ### Data checking and cleaning
@@ -1115,7 +1123,9 @@ It is important that all data should be carefully checked before undertaking any
 * Check the number of observations for all of your analyses (as per the comment for the first point - it is surprising how often you can “lose” participants!) 
 
 
-    Undertake some of the data checking / cleaning procedures for the pertussis dataset: check for missing values and recode as appropriate, generate frequency tables, summary statistics and graphs as appropriate, label the variables and values of categorical variables. You should also try categorising some of the continuous variables. 
+    Undertake some of the data checking / cleaning procedures for the pertussis dataset: check for missing values and recode as appropriate,
+    generate frequency tables, summary statistics and graphs as appropriate, label the variables and values of categorical variables. You 
+    should also try categorising some of the continuous variables. 
 
 
 ### Data Management in R (II) – Managing datasets
@@ -1228,7 +1238,8 @@ wide <- reshape(long, idvar = c("subject", "group", "pre"), timevar = "variable"
 Success! The dataset is not back to the original format; except that the variable names have now changed slightly, however this does not matter.
 
 
-    We will now combine the rest of the data for the Postnatal Depression Study and produce a final combined dataset in long format. There are various ways that this can be done but the following process is suggested: 
+    We will now combine the rest of the data for the Postnatal Depression Study and produce a final combined dataset 
+    in long format. There are various ways that this can be done but the following process is suggested: 
     
       1. Append the two 6 month follow-up datasets. 
       2. Reshape the combined (appended) 4 and 5 month datasets from long to wide. 
@@ -1238,4 +1249,5 @@ Success! The dataset is not back to the original format; except that the variabl
       dataset. 
       5. Reshape the (wide) combined 1-6 month follow-up dataset to long format. 
 
-    If you are feeling adventurous you might want to try one (or multiple) other methods of getting the data into the appropriate format.
+    If you are feeling adventurous you might want to try one (or multiple) other methods of getting the data into 
+    the appropriate format.
