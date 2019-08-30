@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 
-This manual was created by Catherine D’Este and updated by Tambri Housen and Alice Richardson. The manual was originally created for use with Stata data analysis software, the conversion to R was conducted by Nidhi Menon and Arminder Deol. The manual was created for the [Australian Field Epidemiology Training Program – Masters of Philosophy (Applied Epidemiology)](https://rsph.anu.edu.au/study/master-degrees/master-philosophy-applied-epidemiology), Australian National University. CRICOS Provider No. 00120C
+This manual was created by Catherine D'Este and updated by Tambri Housen and Alice Richardson. The manual was originally created for use with Stata data analysis software, the conversion to R was conducted by Nidhi Menon and Arminder Deol. The manual was created for the [Australian Field Epidemiology Training Program - Masters of Philosophy (Applied Epidemiology)](https://rsph.anu.edu.au/study/master-degrees/master-philosophy-applied-epidemiology), Australian National University. CRICOS Provider No. 00120C
 
 ***
 ### Learning objectives
